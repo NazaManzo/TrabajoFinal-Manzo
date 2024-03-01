@@ -68,7 +68,6 @@ rowProduct.addEventListener('click', e => {
 	}
 });
 
-// Funcion para mostrar  HTML
 const showHTML = () => {
 	if (!allProducts.length) {
 		cartEmpty.classList.remove('hidden');
@@ -80,7 +79,6 @@ const showHTML = () => {
 		cartTotal.classList.remove('hidden');
 	}
 
-	// Limpiar HTML
 	rowProduct.innerHTML = '';
 
 	let total = 0;
@@ -122,3 +120,72 @@ const showHTML = () => {
 	valorTotal.innerText = `$${total}`;
 	countProducts.innerText = totalOfProducts;
 };
+
+$(document).ready(function() {    
+    $(".btn-add-cart").click(function() {        
+        $(this).css("background-color", "green");
+
+        var btn = $(this);
+        setTimeout(function() {
+            btn.css("background-color", "");
+        }, 1000);
+    });
+});
+
+document.getElementById("miFormulario").addEventListener("submit", function(event) {
+	event.preventDefault();
+	const formData = new FormData(this);
+	fetch('https://jsonplaceholder.typicode.com/posts', {
+		method: "POST",
+		body: formData
+	})
+	.then(response => response.text())
+	.then(result => {
+		console.log(result);
+	})	
+	.catch(error => {
+		console.error('Error:', error);
+	});
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const savedCart = JSON.parse(localStorage.getItem('cart'));
+    if (savedCart) {
+        allProducts = savedCart;
+        showHTML();
+    }
+});
+
+function saveCartToLocal() {
+    localStorage.setItem('cart', JSON.stringify(allProducts));
+}
+
+
+productsList.addEventListener('click', e => {
+    if (e.target.classList.contains('btn-add-cart')) {
+        
+        
+        
+        saveCartToLocal();
+    }
+});
+
+
+rowProduct.addEventListener('click', e => {
+    if (e.target.classList.contains('icon-close')) {
+        
+        
+        saveCartToLocal();
+    }
+});
+
+
+document.getElementById("miFormulario").addEventListener("submit", function(event) {
+    event.preventDefault();
+    
+    const savedCart = JSON.parse(localStorage.getItem('cart'));
+    if (savedCart) {
+        allProducts = savedCart;
+        showHTML();
+    }
+});
